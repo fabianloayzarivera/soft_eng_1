@@ -1,6 +1,17 @@
 #include "stdafx.h"
 #include "base.h"
 
+void initGame(Player player) {
+	int i;
+	for (i = 0; i < Game::worldSize; i++) {
+		Game::world[i] = Game::floorChar;
+		if (i == Game::worldSize / 2) {
+			Game::world[i] = player.graphic;
+		}
+	}
+
+}
+
 void generateMonster(int direction, list<Monster*> &listMonsters) {
 
 	Monster* monster = new Monster;
@@ -69,7 +80,7 @@ void moveBullet(list<Bullet*> &listBullets, list<Monster*> &listMonsters) {
 		}
 		else {
 			nextPos = (*bull)->pos + 1;
-			graph = (*bull)->graphicRight;
+		graph = (*bull)->graphicRight;
 		}
 
 		if ((nextPos >= 0) && (nextPos <= Game::worldSize - 1)) {
@@ -118,4 +129,24 @@ bool checkHit(int nextPos, int actualPos, list<Monster*> &listMonsters) {
 
 	}
 	return hit;
+}
+
+bool checkPlayerDead(int nextPos, int actualPos, Player player) {
+	if ((nextPos == player.pos) || (actualPos == player.pos))
+		return true;
+	else
+		return false;
+}
+
+void rain(int &rainPrev) {
+	int randPos = rand() % Game::worldSize;
+
+	if (Game::world[rainPrev] == ',')
+		Game::world[rainPrev] = Game::floorChar;
+
+	if (Game::world[randPos] == Game::floorChar)
+		Game::world[randPos] = ',';
+
+	rainPrev = randPos;
+
 }

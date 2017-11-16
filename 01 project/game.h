@@ -1,4 +1,5 @@
 #pragma once
+
 class Game {
 public:
 	static char world[100];
